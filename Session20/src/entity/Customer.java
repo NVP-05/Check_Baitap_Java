@@ -4,22 +4,17 @@ import java.util.Optional;
 import java.util.Scanner;
 
 public class Customer implements IApp {
-    @Override
-    public void inputData(Scanner scanner) {
-        this.id = count++;
-        System.out.println("Tên: ");
-        this.name = scanner.nextLine();
-        System.out.println("Email: ");
-        this.email = Optional.of(scanner.nextLine());
-    }
-
-    private static int count = 0;
+    private static int idSequence = 0;
     private int id;
     private String name;
     private Optional<String> email;
 
-    public Customer(int id, String name, Optional<String> email) {
-        this.id = id;
+    public Customer() {
+        this.id = ++idSequence;
+    }
+
+    public Customer(String name, Optional<String> email) {
+        this.id = ++idSequence;
         this.name = name;
         this.email = email;
     }
@@ -32,16 +27,12 @@ public class Customer implements IApp {
         return name;
     }
 
-    public Optional<String> getEmail() {
-        return email;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Optional<String> getEmail() {
+        return email;
     }
 
     public void setEmail(Optional<String> email) {
@@ -49,7 +40,16 @@ public class Customer implements IApp {
     }
 
     @Override
+    public void inputData(Scanner scanner) {
+        System.out.println("Nhập vào tên khách hàng:");
+        this.name = scanner.nextLine();
+        System.out.println("Nhập vào email khách hàng:");
+        String inputEmail = scanner.nextLine().trim();
+        this.email = inputEmail.isEmpty() ? Optional.empty() : Optional.of(inputEmail);
+    }
+
+    @Override
     public String toString() {
-        return "ID: " + id + ", Tên: '" + name + ", Email: " + email;
+        return "Mã khách hàng: " + this.id + ", Tên khách hàng: " + this.name + ", Email: " + this.email.orElse("Không có email");
     }
 }

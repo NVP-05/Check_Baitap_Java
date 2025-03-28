@@ -1,91 +1,45 @@
 package presentation;
 
+import business.CustomerBusiness;
+import business.OrderBusiness;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
-
-import static business.CustomerBusiness.addCustomer;
+import entity.Customer;
+import entity.Order;
 
 public class ShopManagement {
+    public static final List<Customer> listCustomers = new ArrayList<>();
+    public static final List<Order> listOrders = new ArrayList<>();
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        do {
-            System.out.println("*****************SHOP MENU****************");
-            System.out.println("1. Quản lý khách hàng.");
-            System.out.println("2. Quản lý đơn hàng.");
-            System.out.println("3. Thoát.");
-            System.out.println("Lựa chọn của bạn là: ");
-            int shopChoie = scanner.nextInt();
-            scanner.nextLine();
-            switch (shopChoie) {
+        CustomerBusiness customerBusiness = new CustomerBusiness();
+        OrderBusiness orderBusiness = new OrderBusiness();
+
+        while (true) {
+            System.out.println("1. Quản lý khách hàng\n2. Quản lý đơn hàng\n3. Thoát");
+            int choice = Integer.parseInt(scanner.nextLine());
+            switch (choice) {
                 case 1:
-                    displayCustomerMenu(scanner);
+                    System.out.println("1. Danh sách khách hàng\n2. Thêm mới khách hàng\n3. Thoát");
+                    int cChoice = Integer.parseInt(scanner.nextLine());
+                    if (cChoice == 1) customerBusiness.displayCustomers();
+                    else if (cChoice == 2) customerBusiness.addCustomer(scanner);
                     break;
                 case 2:
-                    displayOrderMenu(scanner);
+                    System.out.println("1. Danh sách đơn hàng\n2. Thêm mới đơn hàng\n3. Cập nhật trạng thái\n4. Danh sách đơn hàng quá hạn\n5. Thống kê đơn đã giao\n6. Tổng doanh thu\n7. Thoát");
+                    int oChoice = Integer.parseInt(scanner.nextLine());
+                    if (oChoice == 1) orderBusiness.displayOrders();
+                    else if (oChoice == 2) orderBusiness.addOrder(scanner);
+                    else if (oChoice == 3) orderBusiness.updateOrderStatus(scanner);
+                    else if (oChoice == 4) System.out.println(orderBusiness.getOrderOverdue());
+                    else if (oChoice == 5) System.out.println(orderBusiness.getOrderDelivered());
+                    else if (oChoice == 6) System.out.println("Tổng doanh thu: " + orderBusiness.getTotalRevenue());
                     break;
                 case 3:
                     System.exit(0);
-                default:
-                    System.out.println("Vui lòng chọn từ 1-3.");
             }
-        } while (true);
-    }
-
-    public static void displayCustomerMenu(Scanner scanner) {
-        do {
-            System.out.println("*****************CUSTOMER MENU****************");
-            System.out.println("1. Danh sách khách hàng.");
-            System.out.println("2. Thêm mới khách hàng.");
-            System.out.println("3. Thoát.");
-            System.out.println("Lựa chọn của bạn là: ");
-            int customerChoie = scanner.nextInt();
-            scanner.nextLine();
-            switch (customerChoie) {
-                case 1:
-                    System.out.println("Danh sách khách hàng:");
-                    break;
-                case 2:
-                    addCustomer(scanner);
-                    break;
-                case 3:
-                    return;
-                default:
-                    System.out.println("Vui lòng chọn từ 1-3.");
-            }
-
-        } while (true);
-    }
-
-    public static void displayOrderMenu(Scanner scanner) {
-        do {
-            System.out.println("*****************ORDER MENU****************");
-            System.out.println("1. Danh sách đơn hàng.");
-            System.out.println("2. Thêm mới đơn hàng.");
-            System.out.println("3. Cập nhật trạng thái đơn hàng.");
-            System.out.println("4. Danh sách đơn hàng quá hạn.");
-            System.out.println("5. Thống kê số lượng đơn hàng đã giao (Trạng thái true).");
-            System.out.println("6. Tính tổng doanh thu các đơn hàng đã giao.");
-            System.out.println("7. Thoát.");
-            System.out.println("Lựa chọn của bạn là: ");
-            int orderChoie = scanner.nextInt();
-            scanner.nextLine();
-            switch (orderChoie) {
-                case 1:
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    break;
-                case 5:
-                    break;
-                case 6:
-                    break;
-                case 7:
-                    return;
-                default:
-                    System.out.println("Vui lòng chọn từ 1-7.");
-            }
-        } while (true);
+        }
     }
 }
